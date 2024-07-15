@@ -1,10 +1,11 @@
 // imports
 const express = require("express");
-const exp = require("constants");
 const morgan = require("morgan");
-const productController = require("./controller/product");
+const productRouter = require("./routes/product");
+const userRouter = require("./routes/user");
 // server
 const server = express();
+// router
 // Middlewares
 // body parser
 server.use(express.json());
@@ -13,14 +14,8 @@ server.use(express.urlencoded({ extended: true }));
 server.use(morgan("dev"));
 // middleware to get static file from inside the public dir
 server.use(express.static("public"));
-
-// API or Endpoints
-server.get("/products", productController.getAllProducts);
-server.get("/products/:id", productController.getProduct);
-server.post("/products", productController.addProduct);
-server.put("/products/:id", productController.replaceProduct);
-server.patch("/products/:id", productController.updateProduct);
-server.delete("/products/:id", productController.deleteProduct);
+server.use("/products", productRouter.router);
+server.use("/users", userRouter.router);
 
 // listening to port 3000
 server.listen(3000, () => {
